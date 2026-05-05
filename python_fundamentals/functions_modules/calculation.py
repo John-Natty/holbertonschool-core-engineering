@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Program that imports calculator functions and prints calculations."""
+"""Program that imports calculator functions."""
 
-from calculation_1 import add, sub, mul, div
+from calculator_1 import add, sub, mul, div
 
 
 if __name__ == "__main__":
