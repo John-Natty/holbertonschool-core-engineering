@@ -11,10 +11,12 @@ def safe_print_division(a, b):
         float: The result of the division,
         or None if division cannot be performed.
     """
+    result = None
+
     try:
         result = a / b
-        return result
-    except ZeroDivisionError:
+    except Exception:
         return None
     finally:
         print("Inside result: {}".format(result))
+    return result
