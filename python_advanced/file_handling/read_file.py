@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""Module to read a file"""
+"""Module for reading a text file."""
 
 
-def read_file(filename: str) -> str:
-    """Reads a file and returns its content as a string
+def read_file(filename=""):
+    """Read a UTF-8 text file and print its content to stdout."""
+    # Open the file in read mode with UTF-8 encoding
+    with open(filename, "r", encoding="utf-8") as file:
+        # Read the whole content of the file
+        content = file.read()
 
-    Args:
-        filename (str): The name of the file to read
-
-    Returns:
-        str: The content of the file
-    """
-    with open(filename, 'r') as f:
-        return f.read()
+        # Print the content without adding an extra newline
+        print(content, end="")
