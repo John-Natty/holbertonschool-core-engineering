@@ -5,25 +5,34 @@ import asyncio
 import websockets
 
 
-async def connect_and_send():
-    """Connect to the server, send a message, and print the response."""
-    # Define the WebSocket server URI.
-    uri = "ws://localhost:8765"
-
-    # Message required by the project.
-    message = "Hello WebSocket"
-
-    # Open a WebSocket connection to the server.
+async def connect_and_send(uri, message):
+    """Connect to a WebSocket server, send a message, and return response."""
+    # Open a WebSocket connection to the given URI.
     async with websockets.connect(uri) as websocket:
-        # Send the exact message to the server.
+        # Send the given message to the server.
         await websocket.send(message)
 
-        # Wait for the server response.
+        # Wait for one response from the server.
         response = await websocket.recv()
 
-        # Print the response exactly as received.
-        print(response)
+        # Return the response exactly as received.
+        return response
+
+
+async def main():
+    """Run the client with the required default message."""
+    # Required server URI for the project.
+    uri = "ws://localhost:8765"
+
+    # Required message for the project.
+    message = "Hello WebSocket"
+
+    # Send the message and get the response.
+    response = await connect_and_send(uri, message)
+
+    # Print only the response, exactly as received.
+    print(response)
 
 
 if __name__ == "__main__":
-    asyncio.run(connect_and_send())
+    asyncio.run(main())
