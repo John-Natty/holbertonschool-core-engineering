@@ -5,19 +5,19 @@ import asyncio
 import websockets
 
 
-async def echo(websocket, _path=None):
-    """Receive messages from a client and send them back unchanged."""
-    # The async loop keeps listening while the client stays connected.
+async def connection_handler(websocket, path=None):
+    """Handle a client connection and echo received messages."""
+    # Listen continuously for messages from the connected client.
     async for message in websocket:
-        # Send back the exact same message to the same client.
+        # Send back the exact same message without modification.
         await websocket.send(message)
 
 
 async def main():
-    """Start the WebSocket server and keep it running forever."""
-    # Start a WebSocket server on localhost, port 8765.
-    async with websockets.serve(echo, "localhost", 8765):
-        # Keep the server alive indefinitely.
+    """Start the WebSocket server on localhost port 8765."""
+    # Create the WebSocket server using the required handler function.
+    async with websockets.serve(connection_handler, "localhost", 8765):
+        # Keep the server running forever.
         await asyncio.Future()
 
 
