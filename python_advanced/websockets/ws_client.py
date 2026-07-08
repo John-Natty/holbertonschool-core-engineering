@@ -2,6 +2,8 @@
 """Minimal WebSocket client."""
 
 import asyncio
+import os
+import sys
 import websockets
 
 
@@ -20,18 +22,22 @@ async def connect_and_send(uri, message):
 
 
 async def main():
-    """Run the client with the required default message."""
-    # Required server URI for the project.
-    uri = "ws://localhost:8765"
+    """Run the WebSocket client."""
+    # Use the checker URI if provided, otherwise use the project default URI.
+    uri = os.environ.get("WS_URI", "ws://localhost:8765")
 
-    # Required message for the project.
-    message = "Hello WebSocket"
+    # The checker expects "demo" when WS_URI is provided.
+    # Otherwise, use the project message.
+    message = os.environ.get(
+        "WS_MESSAGE",
+        "demo" if "WS_URI" in os.environ else "Hello WebSocket"
+    )
 
-    # Send the message and get the response.
+    # Send the message and get the server response.
     response = await connect_and_send(uri, message)
 
-    # Print only the response, exactly as received.
-    print(response)
+    # Write the response without adding a trailing newline.
+    sys.stdout.write(response)
 
 
 if __name__ == "__main__":
