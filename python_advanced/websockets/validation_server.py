@@ -3,21 +3,27 @@
 
 import asyncio
 import websockets
+from websockets.exceptions import ConnectionClosed
 
 
 async def connection_handler(websocket, path=None):
     """Handle a client connection and validate each received message."""
-    # Listen continuously while the client stays connected.
-    async for message in websocket:
-        # Remove leading and trailing whitespace only for validation.
-        cleaned_message = message.strip()
+    try:
+        # Listen continuously while the client stays connected.
+        async for message in websocket:
+            # Remove leading and trailing whitespace for validation only.
+            cleaned_message = message.strip()
 
-        # If the cleaned message is empty, reject it.
-        if cleaned_message == "":
-            await websocket.send("ERR:EMPTY")
-        else:
-            # Send the original valid message with the required OK prefix.
-            await websocket.send(f"OK:{message}")
+            # Reject empty messages or messages containing only spaces.
+            if cleaned_message == "":
+                await websocket.send("ERR:EMPTY")
+            else:
+                # Send the original valid message with the required prefix.
+                await websocket.send(f"OK:{message}")
+
+    except ConnectionClosed:
+        # The client disconnected. Nothing else is required here.
+        pass
 
 
 async def main():
